@@ -1,0 +1,49 @@
+---
+- name: Test Connection to my servers
+  hosts: final
+  become: yes
+
+  tasks:
+
+  - name: Ping my servers
+    ping:
+
+  - name: Get hostname
+    debug:
+          var=ansible_hostname
+
+
+  - block:      #=======Block For UBUNTU======
+    - name: Install Apache on Ubuntu
+      apt: name=apache2 state=latest
+
+
+    - name: Install VIM on Ubuntu
+      apt: name=vim state=latest
+
+    - name: Install MC on Ubuntu
+      apt: name=mc state=latest
+
+    - name: Install Net-tools on Ubuntu
+      apt: name=net-tools state=latest
+
+    when: ansible_os_family == "Debian"
+
+
+
+
+  - block:      #=======Block For Centos======
+
+    - name: Install HTTPD on CentOS
+      yum: name=httpd state=latest
+
+    - name: Install VIM on CentOS
+      yum: name=vim state=latest
+
+    - name: Install MC on CentOS
+      yum: name=mc state=latest
+
+    - name: Install Net-Tools on CentOS
+      yum: name=net-tools state=latest
+
+    when: ansible_os_family == "RedHat"
